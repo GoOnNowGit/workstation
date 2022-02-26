@@ -1,0 +1,55 @@
+---
+- hosts: all
+  vars:
+  - terraform_version: 0.12.24
+  tasks:
+  - name: install packages
+    apt:
+      name: "{{ packages }}"
+      update_cache: yes
+    vars:
+      packages:
+      - apt-transport-https
+      - ca-certificates
+      - dirmngr
+      - gnupg2
+      - unzip
+
+  - name: get hashicorp gnupg key
+    command: gpg --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 91A6E7F85D05C65630BEF18951852D87348FFC4C
+
+  - name: get hashicorp sha256 sums
+    get_url:
+      url: https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_SHA256SUMS
+      dest: /tmp/terraform_{{ terraform_version }}_SHA256SUMS
+
+  - name: get hashicorp sigs
+    get_url:
+      url: https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_SHA256SUMS.sig
+      dest: /tmp/terraform_{{ terraform_version }}_SHA256SUMS.sig
+
+  - name: verify hashicorp sigs
+    command:
+      cmd: gpg --verify /tmp/terraform_{{ terraform_version }}_SHA256SUMS.sig
+
+  - name: get terraform
+    get_url:
+      url: https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_{{ ansible_system | lower }}_{{ (ansible_architecture == 'x86_64') | ternary('amd64', ansible_architecture) }}.zip
+      dest: /tmp/terraform_{{ terraform_version }}_{{ (ansible_architecture == 'x86_64') | ternary('amd64', ansible_architecture) }}.zip
+      checksum: sha256:https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_SHA256SUMS
+
+  - name: create terraform group
+    become: yes
+    group:
+      name: terraform
+      system: yes
+      state: present
+
+  - name: install terraform
+    become: yes
+    unarchive:
+      src: /tmp/terraform_{{ terraform_version }}_{{ (ansible_architecture == 'x86_64') | ternary('amd64', ansible_architecture) }}.zip
+      mode: 0550
+      owner: root
+      group: terraform
+      dest: /usr/local/bin

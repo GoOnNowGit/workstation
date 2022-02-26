@@ -1,0 +1,9 @@
+---
+- hosts: all
+  tasks:
+  - name: set Finder defaults
+    command:
+      cmd: defaults write com.apple.finder {{ item }}
+    loop:
+     - ShowStatusBar -bool true
+     - ShowPathbar -bool true

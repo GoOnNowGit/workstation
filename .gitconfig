@@ -1,0 +1,8 @@
+# This is Git's per-user configuration file.
+[user]
+name = goonnowgit
+email = goonnowgittt@gmail.com
+[init]
+	defaultBranch = main
+[color]
+	ui = auto

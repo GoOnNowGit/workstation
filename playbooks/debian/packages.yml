@@ -1,0 +1,100 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+  - name: add apt preferences
+    copy:
+      src: etc/apt/preferences.d/
+      dest: /etc/apt/preferences.d/
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: add apt confs
+    copy:
+      src: etc/apt/apt.conf.d/
+      dest: /etc/apt/apt.conf.d/
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: add debian repos
+    apt_repository:
+      repo: "{{ item }}"
+    loop:
+    - deb https://deb.debian.org/debian sid main
+    - deb-src https://deb.debian.org/debian sid main
+    - deb https://deb.debian.org/debian experimental main
+
+  - name: add packages
+    apt:
+      name: "{{ packages }}"
+      update_cache: yes
+      state: latest
+    vars:
+      packages:
+      - apt-transport-https
+      - build-essential
+      - ca-certificates
+      - cinnamon
+      - dirmngr
+      - ethtool
+      - fakeroot
+      - git
+      - gnome-terminal
+      - gnupg2
+      - golang
+      - htop
+      - jq
+      - keepassxc
+      - libdrm-amdgpu1
+      - libvirt-clients
+      - libvirt-daemon-system
+      - libvirt-dev
+      - libvirt0
+      - libxml2-dev
+      - libxslt-dev
+      - lightdm
+      - linux-headers-amd64
+      - mesa-utils
+      - neovim
+      - netcat-openbsd
+      - nftables
+      - nmap
+      - opensc
+      - openvswitch-common
+      - openvswitch-switch
+      - pcscd
+      - pkgconf
+      - postgresql
+      - pv
+      - qemu
+      - qemu-kvm
+      - qemu-system-common
+      - qemu-system-gui
+      - qemu-system-x86
+      - qemu-utils
+      - rsync
+      - ruby-dev
+      - rxvt
+      - rxvt-unicode
+      - scdaemon
+      - shellcheck
+      - socat
+      - tcpdump
+      - thunderbird
+      - tmux
+      - unattended-upgrades
+      - unzip
+      - vim
+      - virt-manager
+      - virt-viewer
+      - virtualenv
+      - xserver-xorg
+      - xz-utils
+      - ykcs11
+      - yubico-piv-tool
+      - yubikey-manager
+      - yubioath-desktop
+      - zlib1g-dev
+      - zsh

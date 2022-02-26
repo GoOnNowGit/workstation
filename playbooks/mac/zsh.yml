@@ -1,0 +1,27 @@
+---
+- hosts: all
+  tasks:
+  - name: install oh-my-zsh
+    environment:
+      CHSH: yes
+      RUNZSH: yes
+    command:
+      cmd: sh {{ ansible_env.HOME }}/install.sh --unattended
+      creates: "{{ ansible_env.HOME }}/.oh-my-zsh"
+
+  - name: install zsh related brew packages
+    homebrew:
+      name:
+      - zsh-autosuggestions
+      - zsh-history-substring-search
+      - zsh-syntax-highlighting
+
+  - name: add lines to zshrc for zsh related packages
+    lineinfile:
+      path: "{{ ansible_env.HOME }}/.zshrc"
+      line: source /usr/local/share/{{ item }}/{{ item }}.zsh
+      validate: /bin/zsh -c "source %s"
+    loop:
+    - zsh-autosuggestions
+    - zsh-history-substring-search
+    - zsh-syntax-highlighting

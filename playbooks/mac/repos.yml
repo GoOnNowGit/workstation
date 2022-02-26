@@ -1,0 +1,18 @@
+---
+- hosts: all
+  tasks:
+  - name: make repos dir
+    file:
+      state: directory
+      path: "{{ ansible_env.HOME }}/repos"
+
+  - name: clone git repos
+    git:
+      repo: "{{ item }}"
+      dest: "{{ ansible_env.HOME }}/repos/{{ item | basename | splitext | first }}"
+    loop:
+    - https://github.com/chef/bento.git
+    - https://github.com/trailofbits/algo.git
+    - https://github.com/mfukar/robotframework-vim.git
+    - https://github.com/jessfraz/dockerfiles.git
+    - https://github.com/jessfraz/dotfiles.git

@@ -1,0 +1,9 @@
+---
+- hosts: all
+  tasks:
+  - name: get yubico authenticator
+    become: yes
+    get_url:
+      url: https://developers.yubico.com/yubioath-desktop/Releases/yubioath-desktop-latest-linux.AppImage
+      dest: /usr/local/bin/yubico-authenticator
+      mode: 0555

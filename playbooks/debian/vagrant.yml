@@ -1,0 +1,81 @@
+---
+- hosts: all
+  vars:
+  - vagrant_version: 2.2.9
+  tasks:
+  - name: install packages
+    apt:
+      name: "{{ packages }}"
+      update_cache: yes
+    vars:
+      packages:
+      - apt-transport-https
+      - ca-certificates
+      - dirmngr
+      - gnupg2
+
+  - name: get hashicorp gnupg key
+    command: gpg --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 91A6E7F85D05C65630BEF18951852D87348FFC4C
+
+  - name: get hashicorp sha256 sums
+    get_url:
+      url: https://releases.hashicorp.com/vagrant/{{ vagrant_version }}/vagrant_{{ vagrant_version }}_SHA256SUMS
+      dest: /tmp/vagrant_{{ vagrant_version }}_SHA256SUMS
+
+  - name: get hashicorp sigs
+    get_url:
+      url: https://releases.hashicorp.com/vagrant/{{ vagrant_version }}/vagrant_{{ vagrant_version }}_SHA256SUMS.sig
+      dest: /tmp/vagrant_{{ vagrant_version }}_SHA256SUMS.sig
+
+  - name: verify hashicorp sigs
+    command:
+      cmd: gpg --verify /tmp/vagrant_{{ vagrant_version }}_SHA256SUMS.sig
+
+  - name: get hashicorp tools
+    get_url:
+      url: https://releases.hashicorp.com/vagrant/{{ vagrant_version }}/vagrant_{{ vagrant_version }}_{{ ansible_architecture }}.deb
+      dest: /tmp/vagrant_{{ vagrant_version }}_{{ ansible_architecture }}.deb
+      checksum: sha256:https://releases.hashicorp.com/vagrant/{{ vagrant_version }}/vagrant_{{ vagrant_version }}_SHA256SUMS
+
+  - name: install vagrant
+    become: yes
+    apt:
+      deb: /tmp/vagrant_{{ vagrant_version }}_{{ ansible_architecture }}.deb
+
+  - name: install vagrant-libvirt deps
+    become: yes
+    apt:
+      name: "{{ packages }}"
+      update_cache: yes
+      state: build-dep
+    vars:
+      packages:
+      - vagrant
+      - ruby-libvirt
+
+  - name: install vagrant-libvirt plugin deps
+    become: yes
+    apt:
+      name: "{{ packages }}"
+      update_cache: yes
+      state: latest
+    vars:
+      packages:
+      - qemu
+      - libvirt-daemon-system
+      - libvirt-clients
+      - ebtables
+      - dnsmasq-base
+      - libxslt-dev
+      - libxml2-dev
+      - libvirt-dev
+      - zlib1g-dev
+      - ruby-dev
+
+  - name: install vagrant plugins
+    command:
+      cmd: vagrant plugin install {{ item }}
+    loop:
+    - vagrant-cachier
+    - vagrant-disksize
+    - vagrant-libvirt

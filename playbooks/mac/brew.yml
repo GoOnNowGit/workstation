@@ -1,0 +1,76 @@
+---
+- hosts: all
+  tasks:
+  - name: install brew packages
+    environment:
+      HOMEBREW_NO_INSECURE_REDIRECT: 1
+    homebrew:
+      name:
+      - ansible-lint
+      - cfssl
+      - dnscrypt-proxy
+      - exiftool
+      - fzf
+      - gcc
+      - geoip
+      - geoipupdate
+      - gnupg
+      - golang
+      - iterm2
+      - jq
+      - libiconv
+      - libmaxminddb
+      - libosinfo
+      - minikube
+      - neovim
+      - nmap
+      - opensc
+      - packer
+      - paperkey
+      - parallel
+      - pinentry
+      - pinentry-mac
+      - pipenv
+      - pv
+      - python3
+      - qemu
+      - rename
+      - shellcheck
+      - socat
+      - terraform
+      - tldr
+      - tmux
+      - vagrant
+      - volatility
+      - watch
+      - wget
+      - xz
+      - yara
+      - ykman
+      - ykpers
+      - yubico-piv-tool
+      - zeek
+
+  - name: install brew cask packages
+    environment:
+      HOMEBREW_NO_INSECURE_REDIRECT: 1
+    homebrew_cask:
+      name:
+      - brave
+      - firefox
+      - keepassxc
+      - signal
+      - xquartz
+      - yubico-yubikey-manager
+      - yubico-yubikey-personalization-gui
+      - yubico-yubikey-piv-manager
+
+  - name: install elevated brew cask packages
+    become: yes
+    environment:
+      HOMEBREW_NO_INSECURE_REDIRECT: 1
+    homebrew_cask:
+      name:
+      - wireguard
+      - wireshark
+      - yubico-authenticator

@@ -1,0 +1,15 @@
+#drduh recommends - https://github.com/drduh/macOS-Security-and-Privacy-Guide
+---
+- hosts: all
+  tasks:
+  - name: pmsettings
+    become: yes
+    command:
+      cmd: pmset -a {{ item }}
+    loop:
+    -  destroyfvkeyonstandby 1
+    -  hibernatemode 25
+    -  powernap 0
+    -  standby 0
+    -  standbydelay 0
+    -  autopoweroff 0

@@ -1,0 +1,34 @@
+---
+- hosts: all
+  tasks:
+  - name: install snapd
+    become: yes
+    apt:
+      name: snapd
+      update_cache: yes
+      state: latest
+
+  - name: install microk8s snap
+    become: yes
+    snap:
+      name: microk8s
+      classic: yes
+      channel: 1.18/stable
+
+  - name: install classic snaps
+    become: yes
+    snap:
+      classic: yes
+      name:
+      - powershell
+      - code
+
+  - name: install snaps
+    become: yes
+    snap:
+      name:
+      - firefox
+      - postman
+      - bcc
+      - yubioath-desktop
+      - libreoffice

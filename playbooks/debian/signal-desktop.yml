@@ -1,0 +1,31 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+  - name: add packages
+    apt:
+      name: "{{ packages }}"
+      update_cache: yes
+    vars:
+      packages:
+      - apt-transport-https
+      - ca-certificates
+      - dirmngr
+      - gnupg2
+
+  - name: add signal key
+    apt_key:
+      url: https://updates.signal.org/desktop/apt/keys.asc
+      state: present
+
+  - name: add signal repo
+    apt_repository:
+      repo: deb [arch=amd64] https://updates.signal.org/desktop/apt xenial main
+      state: present
+      filename: signal-xenial
+
+  - name: install signal
+    apt:
+      name: signal-desktop
+      update_cache: yes
+      state: latest

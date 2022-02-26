@@ -1,0 +1,29 @@
+---
+repos:
+  - repo: local
+    hooks:
+      - id: plutil
+        name: plutil
+        types: [text]
+        files: .*\.plist
+        language: script
+        entry: /usr/bin/plutil
+
+      - id: ansible-syntax-check
+        name: ansible-syntax-check
+        types: [text]
+        files: playbooks\/*\/.*\.yml
+        language: script
+        entry: /usr/local/bin/ansible-playbook -c local -i127.0.0.1, --syntax-check
+
+  - repo: https://github.com/gruntwork-io/pre-commit
+    rev: v0.1.17
+    hooks:
+      - id: shellcheck
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.4.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
