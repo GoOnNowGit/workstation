@@ -11,6 +11,6 @@ hash -d sagents=/Library/LaunchAgents
 hash -d sdaemons=/Library/LaunchDaemons
 hash -d repos=~/repos
 
-source .aliases
-source .functions
-source .exports
+source ~/.aliases
+source ~/.functions
+source ~/.exports
