@@ -2,20 +2,15 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Disabled</key>
-	<false/>
 	<key>Label</key>
-	<string>locallan.pfctl</string>
+	<string>locallan.pflog0.create</string>
 	<key>WorkingDirectory</key>
 	<string>/var/run</string>
-	<key>Program</key>
-	<string>/sbin/pfctl</string>
 	<key>ProgramArguments</key>
 	<array>
-		<string>pfctl</string>
-		<string>-e</string>
-		<string>-f</string>
-		<string>/etc/pf.conf</string>
+        <string>/sbin/ifconfig</string>
+		<string>pflog0</string>
+		<string>create</string>
 	</array>
 	<key>RunAtLoad</key>
 	<true/>

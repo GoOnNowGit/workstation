@@ -3,16 +3,17 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>locallan.gmail.get-ips</string>
+    <string>locallan.allowed-http.update</string>
     <key>ProgramArguments</key>
     <array>
         <string>/bin/bash</string>
         <string>-c</string>
-        <string>/usr/local/bin/get-gmail-ips.sh | pfctl -a locallan.home -T replace -t gmailips -f -</string>
+        <string>/usr/local/bin/parallel "/usr/bin/host {} | /usr/bin/awk '\$0 ~ /has.*address/ {print \$NF}'" :::: /usr/local/etc/allowed-http.names | pfctl -a locallan.home -T replace -t allowed-http -f -</string>
     </array>
     <key>RunAtLoad</key>
     <true/>
     <key>StartInterval</key>
-    <integer>21600</integer>
+    <integer>3600</integer>
 </dict>
 </plist>
+
