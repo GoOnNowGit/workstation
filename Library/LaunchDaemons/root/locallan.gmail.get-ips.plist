@@ -8,7 +8,7 @@
     <array>
         <string>/bin/bash</string>
         <string>-c</string>
-        <string>/usr/local/bin/get-gmail-ips.sh | pfctl -a locallan.home -T replace -t gmailips -f -</string>
+        <string>/usr/local/bin/get-gmail-ips.sh > /etc/gmailips && pfctl -a locallan.home -T load -t gmailips</string>
     </array>
     <key>RunAtLoad</key>
     <true/>

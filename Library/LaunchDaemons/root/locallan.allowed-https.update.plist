@@ -8,7 +8,7 @@
     <array>
         <string>/bin/bash</string>
         <string>-c</string>
-        <string>/usr/local/bin/parallel "/usr/bin/host {} | /usr/bin/awk '\$0 ~ /has.*address/ {print \$NF}'" :::: /usr/local/etc/allowed-https.names | pfctl -a locallan.home -T replace -t allowed-https -f -</string>
+        <string>/usr/local/bin/parallel "/usr/bin/host {} | /usr/bin/awk '\$0 ~ /has.*address/ {print \$NF}'" :::: /usr/local/etc/allowed-https.names > /etc/allowed-https && pfctl -a locallan.home -T load -t allowed-https</string>
     </array>
     <key>RunAtLoad</key>
     <true/>
