@@ -8,7 +8,7 @@
     <array>
         <string>/bin/bash</string>
         <string>-c</string>
-        <string>/usr/bin/curl https://rules.emergingthreats.net/fwrules/emerging-Block-IPs.txt | grep -v '#' > /etc/emerging-Block-IPs && pfctl -a locallan.home -T load -t emergingthreats</string>
+        <string>pfctl -T replace -t emergingthreats $(/usr/bin/curl https://rules.emergingthreats.net/fwrules/emerging-Block-IPs.txt | grep -v '#')</string>
     </array>
     <key>RunAtLoad</key>
     <true/>

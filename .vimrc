@@ -37,16 +37,13 @@ endif
 "-- THEMING --
 set cursorline
 set background=dark
-
-let g:airline_theme='material'
-let g:material_theme_style = 'darker'
 colorscheme material
+
 hi Normal       ctermbg=NONE guibg=NONE
 hi SignColumn   ctermbg=235 guibg=#262626
 hi LineNr       ctermfg=grey guifg=grey ctermbg=NONE guibg=NONE
 hi CursorLineNr ctermbg=NONE guibg=NONE ctermfg=178 guifg=#d7af00
 
-let g:gitgutter_set_sign_backgrounds = 0
 
 "-- Whitespace highlight --
 match ExtraWhitespace /\s\+$/
@@ -81,12 +78,20 @@ let g:ale_fixers = {
             \ 'rust': ['rustfmt']
             \}
 let g:ale_fix_on_save = 1
-
+"--gitgutter--
+let g:gitgutter_set_sign_backgrounds = 0
 "-- NERDTree --
 let NERDTreeShowHidden=1
+" Start NERDTree and put the cursor back in the other window.
+autocmd VimEnter * NERDTree | wincmd p
+" Exit Vim if NERDTree is the only window remaining in the only tab.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
 
 "-- Airline --
 let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+let g:airline_theme='material'
+let g:material_theme_style = 'darker'
 
 "-- Exuberant Ctags --
 set tags=tags

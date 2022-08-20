@@ -8,7 +8,7 @@
     <array>
         <string>/bin/bash</string>
         <string>-c</string>
-        <string>/usr/local/bin/parallel "/usr/bin/host {} | /usr/bin/awk '\$0 ~ /has.*address/ {print \$NF}'" :::: /usr/local/etc/allowed-http.names > /etc/allowed-http && pfctl -a locallan.home -T load -t allowed-http</string>
+        <string>pfctl -T replace -t allowed-http $(/usr/local/bin/resolve-a-aaaa.sh /usr/local/etc/allowed-http.names)</string>
     </array>
     <key>RunAtLoad</key>
     <true/>
